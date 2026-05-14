@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetShop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sage: '#7a9e87',
+                        'sage-light': '#a8c4b2',
+                        'sage-pale': '#eef4f0',
+                        ink: '#1a1a18',
+                        'ink-mid': '#6b6b65',
+                        'ink-faint': '#c8c8c2',
+                        line: '#e8e8e2',
+                        white: '#fafaf8',
+                    },
+                    fontFamily: {
+                        'dm': ['DM Sans', 'sans-serif'],
+                        'cormorant': ['Cormorant Garamond', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-dm bg-white text-ink text-sm font-light m-0">
+
+<!-- NAV -->
+<nav class="bg-white border-b border-line sticky top-0 z-[100]">
+    <div class="max-w-[1160px] mx-auto px-6">
+        <div class="flex justify-between items-center h-[60px]">
+            <a href="#" class="font-cormorant text-2xl font-normal text-ink tracking-[0.08em] uppercase no-underline flex items-baseline gap-1.5">
+                Petshop 
+                <sup class="font-dm text-[0.55rem] font-normal text-sage tracking-[0.15em] uppercase">® loja</sup>
+            </a>
+            
+            <div class="hidden md:flex items-stretch">
+                <input type="text" placeholder="buscar produtos e categorias"
+                    class="bg-transparent border-0 border-b border-line text-ink font-dm text-[0.8rem] font-light py-1 pr-3 pl-0 w-[280px] outline-none transition-colors duration-200 placeholder:text-ink-faint focus:border-b-sage">
+                <button class="bg-none border-0 text-ink-mid px-2 cursor-pointer text-[0.8rem] transition-colors duration-200 hover:text-sage">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+            
+            <div class="flex items-center gap-1">
+                <button title="Conta" class="bg-none border-0 text-ink-mid w-9 h-9 flex items-center justify-center cursor-pointer transition-colors duration-200 text-[0.95rem] hover:text-ink">
+                    <i class="fa-regular fa-user"></i>
+                </button>
+                <button title="Favoritos" class="bg-none border-0 text-ink-mid w-9 h-9 flex items-center justify-center cursor-pointer transition-colors duration-200 text-[0.95rem] hover:text-ink">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+                <button title="Carrinho" class="bg-none border-0 text-ink-mid w-9 h-9 flex items-center justify-center cursor-pointer transition-colors duration-200 text-[0.95rem] hover:text-ink">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </button>
+                
+                <div class="w-px h-5 bg-line mx-2"></div>
+                
+                <button onclick="abrir()" class="bg-ink border-0 text-white font-dm text-[0.72rem] font-normal tracking-[0.1em] uppercase py-2.5 px-5 cursor-pointer transition-colors duration-200 hover:bg-sage">
+                    + categoria
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- CATEGORY NAV -->
+<div class="border-b border-line bg-white">
+    <div class="max-w-[1160px] mx-auto px-6">
+        <div id="categoriasnav" class="hidden md:flex gap-8"></div>
+    </div>
+</div>
+
+<!-- HERO -->
+<section class="bg-white py-20 px-6">
+    <div class="max-w-[1160px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        <div>
+            <div class="text-[0.65rem] tracking-[0.22em] uppercase text-sage mb-6 flex items-center gap-3">
+                <span class="w-6 h-px bg-sage flex-shrink-0"></span>
+                loja online de produtos pet
+            </div>
+            <h1 class="font-cormorant text-[clamp(3rem,5.5vw,5rem)] font-light leading-tight text-ink mb-7 tracking-[-0.01em]">
+                Cuidado com quem<br>você <em class="italic text-sage">ama.</em>
+            </h1>
+            <p class="text-[0.85rem] text-ink-mid leading-[1.85] max-w-[400px] font-light">
+                Rações, acessórios, medicamentos e brinquedos — tudo o que seu pet precisa, reunido em um só lugar, com a qualidade que ele merece.
+            </p>
+        </div>
+        
+        <div class="hidden md:flex justify-end">
+            <div class="relative w-[340px] before:absolute before:inset-[-12px_-12px_12px_12px] before:border before:border-line before:z-0">
+                <img src="animais-de-estimacao.jpg" alt="Animais de estimação" 
+                    class="relative z-[1] w-full block saturate-[0.85]">
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="border-0 border-t border-line m-0">
+
+<!-- CATEGORIES SECTION -->
+<div class="max-w-[1160px] mx-auto px-6 py-16">
+    <div class="flex items-baseline justify-between mb-10">
+        <h2 class="font-cormorant text-[1.6rem] font-light text-ink">Categorias</h2>
+        <span class="text-[0.7rem] text-ink-faint tracking-[0.1em]" id="cat-count"></span>
+    </div>
+    
+    <div id="sectionscategorias" class="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-px bg-line border border-line"></div>
+</div>
+
+<hr class="border-0 border-t border-line m-0">
+
+<!-- MODAL -->
+<div id="overlay" class="fixed inset-0 bg-ink/45 backdrop-blur hidden items-center justify-center z-[500] p-4">
+    <form id="registroForm" onsubmit="return false;" class="bg-white border border-line p-10 w-full max-w-[440px] relative">
+        <button type="button" onclick="fechar()" class="absolute top-5 right-5 bg-transparent border-0 text-ink-faint cursor-pointer text-base transition-colors duration-200 hover:text-ink p-0">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        
+        <div class="text-[0.62rem] tracking-[0.2em] uppercase text-sage mb-2 flex items-center gap-2.5">
+            <span class="w-4 h-px bg-sage"></span>
+            nova categoria
+        </div>
+        
+        <h2 class="font-cormorant text-[1.6rem] font-light text-ink mb-8">Adicionar categoria</h2>
+        
+        <div class="mb-5">
+            <label class="block text-[0.68rem] tracking-[0.12em] uppercase text-ink-mid mb-1.5">Nome</label>
+            <input id="nome" type="text" placeholder="Ex: Rações"
+                class="w-full bg-transparent border-0 border-b border-line text-ink font-dm text-[0.9rem] font-light py-2 px-0 outline-none transition-colors duration-200 placeholder:text-ink-faint focus:border-b-sage block">
+        </div>
+        
+        <div class="mb-5">
+            <label class="block text-[0.68rem] tracking-[0.12em] uppercase text-ink-mid mb-1.5">Descrição</label>
+            <input id="descricao" type="text" placeholder="Breve descrição"
+                class="w-full bg-transparent border-0 border-b border-line text-ink font-dm text-[0.9rem] font-light py-2 px-0 outline-none transition-colors duration-200 placeholder:text-ink-faint focus:border-b-sage block">
+        </div>
+        
+        <button type="submit" class="w-full bg-ink border-0 text-white font-dm text-[0.72rem] font-normal tracking-[0.15em] uppercase py-4 cursor-pointer mt-3 transition-colors duration-200 hover:bg-sage">
+            Adicionar →
+        </button>
+        
+        <p id="erro" class="text-[#c0392b] text-xs mt-4 mb-0"></p>
+        <p id="resultado" class="text-sage text-xs mt-4 mb-0"></p>
+    </form>
+</div>
+
+<!-- FOOTER -->
+<footer class="border-t border-line bg-white py-12 px-6">
+    <div class="max-w-[1160px] mx-auto">
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-10 mb-12">
+            <div>
+                <h4 class="text-[0.62rem] tracking-[0.2em] uppercase text-ink mb-4">Categorias</h4>
+                <ul id="catfooter" class="list-none m-0 p-0"></ul>
+            </div>
+            
+            <div>
+                <h4 class="text-[0.62rem] tracking-[0.2em] uppercase text-ink mb-4">Redes sociais</h4>
+                <div class="flex gap-5 mt-1">
+                    <a href="#" class="text-ink-mid text-[0.9rem] no-underline transition-colors duration-200 inline-flex hover:text-ink">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-ink-mid text-[0.9rem] no-underline transition-colors duration-200 inline-flex hover:text-ink">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-ink-mid text-[0.9rem] no-underline transition-colors duration-200 inline-flex hover:text-ink">
+                        <i class="fa-brands fa-x-twitter"></i>
+                    </a>
+                    <a href="#" class="text-ink-mid text-[0.9rem] no-underline transition-colors duration-200 inline-flex hover:text-ink">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="text-[0.62rem] tracking-[0.2em] uppercase text-ink mb-4">Endereço</h4>
+                <p class="text-[0.78rem] text-ink-mid leading-[1.9] font-light m-0">
+                    Rodovia Fernão Dias, S/N Km 947.5<br>
+                    Galpão Módulo 3640<br>
+                    Extrema — MG, CEP 37640-903
+                </p>
+            </div>
+        </div>
+        
+        <div class="border-t border-line pt-6 flex items-center justify-between flex-wrap gap-4">
+            <span class="font-cormorant text-[1.1rem] font-normal tracking-[0.1em] uppercase text-ink">Petshop</span>
+            <span class="text-[0.68rem] text-ink-faint">© 2026 Fisia Comércio de Produtos Pet Ltda — CNPJ 59.546.515/0045-55</span>
+        </div>
+    </div>
+</footer>
+
+<script src="js/fetchCategorias.js"></script>
+<script src="js/modal.js"></script>
+<script src="js/cadastroCat.js"></script>
+<script src="js/delete.js"></script>
+
+</body>
+</html>
